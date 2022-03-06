@@ -133,9 +133,17 @@ def add_task():
     new_date = input("Use the format DD/MM/YYYY?: \n")
     validate_add_task(new_date)
 
-    new_task = ['X', new_input, new_date, 'Incomplete']
+    list_worksheet = SHEET.worksheet('to_do')
+    task_numbers = list_worksheet.col_values(1)
+    task_numbers.remove('Number')
+    task_numbers_int = list(map(int, task_numbers))
+
+    new_index = max(task_numbers_int) + 1
+    new_task = [new_index, new_input, new_date, 'Incomplete']
     list_worksheet = SHEET.worksheet('to_do')
     list_worksheet.append_row(new_task)
+
+    print(f"This task has been added as item number {new_index}.")
 
 
 def validate_add_task(date):
@@ -177,3 +185,4 @@ def complete_task():
     task_position = int(task_numbers.index(task_selection))
     list_worksheet.update_cell(task_position + 1, 4, 'Complete')
     print(f"Task number {task_selection} has been set to Complete!")
+
