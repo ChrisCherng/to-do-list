@@ -27,6 +27,11 @@ def select_function():
         if validate_select_function(function_response):
             break
 
+    if function_response.lower() == 'view':
+        select_view_function()
+    else:
+        select_amend_function()
+
     return function_response
 
 
@@ -55,6 +60,11 @@ def select_view_function():
         if validate_view_function(view_response):
             break
 
+    if view_response.lower() == 'full':
+        view_full()
+    else:
+        view_summary()
+
     return view_response
 
 
@@ -82,6 +92,13 @@ def select_amend_function():
         amend_response = input("Type 'Add', 'Delete' or 'Complete' here: \n")
         if validate_amend_function(amend_response):
             break
+
+    if amend_response.lower() == 'add':
+        add_task()
+    elif amend_response.lower() == 'delete':
+        delete_task()
+    else:
+        complete_task()
 
     return amend_response
 
@@ -186,3 +203,5 @@ def complete_task():
     list_worksheet.update_cell(task_position + 1, 4, 'Complete')
     print(f"Task number {task_selection} has been set to Complete!")
 
+
+select_function()
