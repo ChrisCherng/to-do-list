@@ -1,7 +1,7 @@
+from datetime import datetime
 import gspread
 from google.oauth2.service_account import Credentials
 from prettytable import PrettyTable
-from datetime import datetime
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -132,12 +132,26 @@ def view_summary():
     """
     Formats and displays a summary of the list
     """
-    data = SHEET.worksheet('summary').get_all_values()
-    summary_list = PrettyTable()
-    summary_list.field_names = data[0]
-    for i in range(len(data)-1):
-        summary_list.add_row(data[i+1])
-    print(summary_list)
+    data = SHEET.worksheet('to_do').get_all_values()
+    completion_list = SHEET.worksheet('to_do').col_values(4)
+    today = datetime.today()
+    incomplete_list = []
+    for i in range(len(data)):
+        if completion_list[i] == "Incomplete":
+            incomplete_list.append(data[i])
+
+    overdue_list = []
+    for j in range(len(incomplete_list)):
+        if datetime.strptime(incomplete_list[j][2], "%d/%m/%Y") < today:
+            overdue_list.append(incomplete_list[j])
+    
+    overdue_table = PrettyTable()
+    overdue_table.field_names = data[0]
+    for k in range(len(overdue_list)):
+        overdue_table.add_row(overdue_list[k])
+
+    print("Here are all of the overdue tasks:")
+    print(overdue_table)
 
 
 def add_task():
@@ -146,9 +160,11 @@ def add_task():
     Adds the task to the google sheet list at the end
     """
     new_input = input("Type the name of the task here: \n")
-    print("What is the deadline for this new task?")
-    new_date = input("Use the format DD/MM/YYYY?: \n")
-    validate_add_task(new_date)
+    while True:
+        print("What is the deadline for this new task?")
+        new_date = input("Use the format DD/MM/YYYY?: \n")
+        if validate_add_task(new_date):
+            break
 
     list_worksheet = SHEET.worksheet('to_do')
     task_numbers = list_worksheet.col_values(1)
@@ -163,19 +179,18 @@ def add_task():
     print(f"This task has been added as item number {new_index}.")
 
 
-def validate_add_task(date):
+def validate_add_task(input_date):
     """
     Validates that the date input by the user is in the correct format
     Will provide an error message if incorrect and request the date again
     """
-    date_format = "%d/%m/%y"
-    res = True
+    date_format = "%d/%m/%Y"
     try:
-        res = bool(datetime.strptime(date, date_format))
+        datetime.strptime(input_date, date_format)
+        return True
     except ValueError:
-        res = False
-
-    return res
+        print("Please ensure your date is in the format DD/MM/YYYY")
+        return False
 
 
 def delete_task():
