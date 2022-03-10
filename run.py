@@ -141,17 +141,31 @@ def view_summary():
             incomplete_list.append(data[i])
 
     overdue_list = []
-    for j in range(len(incomplete_list)):
-        if datetime.strptime(incomplete_list[j][2], "%d/%m/%Y") < today:
-            overdue_list.append(incomplete_list[j])
-    
+    for i in range(len(incomplete_list)):
+        if datetime.strptime(incomplete_list[i][2], "%d/%m/%Y") < today:
+            overdue_list.append(incomplete_list[i])
+
     overdue_table = PrettyTable()
     overdue_table.field_names = data[0]
-    for k in range(len(overdue_list)):
-        overdue_table.add_row(overdue_list[k])
+    for i in range(len(overdue_list)):
+        overdue_table.add_row(overdue_list[i])
 
-    print("Here are all of the overdue tasks:")
+    print("\nHere are all of the overdue tasks:")
     print(overdue_table)
+
+    upcoming_list = []
+    for i in range(len(incomplete_list)):
+        if datetime.strptime(incomplete_list[i][2], "%d/%m/%Y") >= today:
+            upcoming_list.append(incomplete_list[i])
+
+    upcoming_list.sort(key=lambda x: datetime.strptime(x[2], "%d/%m/%Y"))
+
+    upcoming_table = PrettyTable()
+    upcoming_table.field_names = data[0]
+    upcoming_table.add_rows([upcoming_list[0], upcoming_list[1], upcoming_list[2]])
+
+    print("\nHere are the next three upcoming tasks:")
+    print(upcoming_table)
 
 
 def add_task():
