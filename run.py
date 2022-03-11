@@ -162,7 +162,9 @@ def view_summary():
 
     upcoming_table = PrettyTable()
     upcoming_table.field_names = data[0]
-    upcoming_table.add_rows([upcoming_list[0], upcoming_list[1], upcoming_list[2]])
+    upcoming_table.add_row(upcoming_list[0])
+    upcoming_table.add_row(upcoming_list[1])
+    upcoming_table.add_row(upcoming_list[2])
 
     print("\nHere are the next three upcoming tasks:")
     print(upcoming_table)
