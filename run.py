@@ -158,11 +158,15 @@ def add_task():
     Requests the user to input a new task
     Adds the task to the google sheet list at the end
     """
-    new_input = input("Type the name of the task here: \n")
+    while True:
+        new_input = input("Type the name of the task here: \n")
+        if validate_add_task_name(new_input):
+            break
+
     while True:
         print("What is the deadline for this new task?")
         new_date = input("Use the format DD/MM/YYYY?: \n")
-        if validate_add_task(new_date):
+        if validate_add_task_date(new_date):
             break
 
     list_worksheet = SHEET.worksheet('to_do')
@@ -178,7 +182,20 @@ def add_task():
     print(f"This task has been added as item number {new_index}.")
 
 
-def validate_add_task(input_date):
+def validate_add_task_name(name):
+    """
+    Checks if the new task name is within 20 characters
+    This ensures that the task will be able to be viewed in the console
+    If over 20 characters, an error message is provided
+    """
+    if len(name) <= 20:
+        return True
+    else:
+        print("The task name must be 20 character max")
+        return False
+
+
+def validate_add_task_date(input_date):
     """
     Validates that the date input by the user is in the correct format
     Will provide an error message if incorrect and request the date again
