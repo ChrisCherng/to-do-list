@@ -13,6 +13,8 @@ The application starts by asking the user which function to use. The following f
 
 ![Flowchart of options for the to-do application](/assets/images/planningflow.PNG)
 
+When selecting a function, the application will validate that the responses are suitable. If not, an error message will display, and the question will be asked again.
+
 ### Add a New Task
 
 The user inputs the name of the task, followed by the deadline of the task. The application will then add this new task to the listing, with a new number. This ensures every task has a unique number, which assists with the deletion and completion functions (below). This new task is added to the list with the default "Incomplete" status.
@@ -73,7 +75,8 @@ Steps for deployment:
 
 ## Credits
 - Code Institute for the GitHub template for terminal applications.
-- The [Pretty Table API](https://pypi.org/project/prettytable/) to neatly format the table outputs to the console.
+- [Pretty Table](https://pypi.org/project/prettytable/) to neatly format the table outputs to the console.
+- [Pyfiglet](https://github.com/pwaller/pyfiglet) for the ASCII header.
 - [LucidChart](https://www.lucidchart.com/pages/) for the flowcharts used in the planning stage.
 - My mentor, Victor Miclovich, for his valuable insights, feedback and advice.
 - My partner, Scott, for his support throughout the project.

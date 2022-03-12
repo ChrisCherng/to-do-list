@@ -2,6 +2,7 @@ from datetime import datetime
 import gspread
 from google.oauth2.service_account import Credentials
 from prettytable import PrettyTable
+import pyfiglet
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -15,16 +16,23 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('to_do_list')
 
 
+function_options = {
+    "type": ["view", "amend"],
+    "view": ["full", "summary"],
+    "amend": ["add", "delete", "complete"]
+}
+
+
 def select_function():
     """
     Asks the user which function they want to use
     Between amending the list and viewing the list
     """
     while True:
-        print("Would you like to view or amend the list?")
+        print("\nWould you like to view or amend the list?")
 
         function_response = input("Type 'View' or 'Amend' here: \n")
-        if validate_select_function(function_response):
+        if validate_input(function_response, "type"):
             break
 
     if function_response.lower() == 'view':
@@ -33,19 +41,6 @@ def select_function():
         select_amend_function()
 
     return function_response
-
-
-def validate_select_function(response):
-    """
-    Checks that the user has input 'View' or 'Amend'
-    Allows the user to input either upper or lower case
-    """
-    functions = ['view', 'amend']
-    if response.lower() in functions:
-        return True
-    else:
-        print("Response should be 'View' or 'Amend' only")
-        return False
 
 
 def select_view_function():
@@ -57,7 +52,7 @@ def select_view_function():
         print("Which view would you like?")
 
         view_response = input("Type 'Full' or 'Summary' here: \n")
-        if validate_view_function(view_response):
+        if validate_input(view_response, "view"):
             break
 
     if view_response.lower() == 'full':
@@ -66,19 +61,6 @@ def select_view_function():
         view_summary()
 
     return view_response
-
-
-def validate_view_function(response):
-    """
-    Checks that the user has input 'Full' or 'Summary'
-    Allows the user to input either upper or lower case
-    """
-    views = ['full', 'summary']
-    if response.lower() in views:
-        return True
-    else:
-        print("Response should be 'Full' or 'Summary' only")
-        return False
 
 
 def select_amend_function():
@@ -90,7 +72,7 @@ def select_amend_function():
         print("What amendment would you like?")
 
         amend_response = input("Type 'Add', 'Delete' or 'Complete' here: \n")
-        if validate_amend_function(amend_response):
+        if validate_input(amend_response, "amend"):
             break
 
     if amend_response.lower() == 'add':
@@ -103,16 +85,17 @@ def select_amend_function():
     return amend_response
 
 
-def validate_amend_function(response):
+def validate_input(response, option):
     """
-    Checks that the user has input 'Add', 'Delete' or 'Complete'
+    Checks that the user has input a valid response
+    The valid responses are per the function_options dictionary
     Allows the user to input either upper or lower case
     """
-    amendments = ['add', 'delete', 'complete']
-    if response.lower() in amendments:
+    functions = function_options.get(option)
+    if response.lower() in functions:
         return True
     else:
-        print("Response should be 'Add', 'Delete' or 'Complete' only")
+        print("\nResponse is not valid!")
         return False
 
 
@@ -205,7 +188,7 @@ def validate_add_task(input_date):
         datetime.strptime(input_date, date_format)
         return True
     except ValueError:
-        print("Please ensure your date is in the format DD/MM/YYYY")
+        print("\nPlease ensure your date is in the format DD/MM/YYYY")
         return False
 
 
@@ -216,7 +199,11 @@ def delete_task():
     """
     list_worksheet = SHEET.worksheet('to_do')
     task_numbers = list_worksheet.col_values(1)
-    task_selection = input("Which task number would you like to delete? \n")
+    while True:
+        task_selection = input("Which task number would you like to delete?\n")
+        if validate_task_number(task_selection):
+            break
+
     task_position = int(task_numbers.index(task_selection))
     list_worksheet.delete_rows(task_position + 1)
     print(f"Task number {task_selection} has been deleted!")
@@ -229,10 +216,41 @@ def complete_task():
     """
     list_worksheet = SHEET.worksheet('to_do')
     task_numbers = list_worksheet.col_values(1)
-    task_selection = input("Which task number is complete? \n")
+    while True:
+        task_selection = input("Which task number is complete? \n")
+        if validate_task_number(task_selection):
+            break
+
     task_position = int(task_numbers.index(task_selection))
     list_worksheet.update_cell(task_position + 1, 4, 'Complete')
     print(f"Task number {task_selection} has been set to Complete!")
 
 
-select_function()
+def validate_task_number(input_number):
+    """
+    Validates that the user has input an existing task number
+    Will provide an error if that task does not exist
+    """
+    task_numbers = SHEET.worksheet('to_do').col_values(1)
+    if input_number in task_numbers:
+        return True
+    else:
+        print("\nThere is no task with that number.")
+        return False
+
+
+def main():
+    """
+    Runs the program functions
+    Places a horizontal line before the restart for separation
+    """
+    while True:
+        select_function()
+        print("\n────────────────────────────────────────────────────────────")
+
+
+ascii_banner = pyfiglet.figlet_format("To Do List")
+print(ascii_banner)
+print("Welcome to your To Do List!")
+print("Please click 'Run Program' above to restart at any time")
+main()
