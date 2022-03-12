@@ -50,10 +50,17 @@ The manipulation required to extract the relevant overdue and upcoming informati
 
 ## Testing
 
-### Manual Testing
+### Manual Functionality Testing
 
+- All possible functions have been run to ensure they perform as expected.
+- Unusual potential user inputs, such as incorrect dates or incorrect task numbers, were tested to determine whether the validation functions were performing correctly. No issues were identified.
 
 ### Bugs
+
+#### Fixed Bugs
+
+- Tasks with longer names would not be able to be viewed on the console output. A validation function has been added to ensure the task names are no longer than 20 characters to ensure the correct output views.
+- 
 
 ### Validator Testing
 

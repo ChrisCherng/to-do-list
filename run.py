@@ -19,7 +19,7 @@ SHEET = GSPREAD_CLIENT.open('to_do_list')
 function_options = {
     "type": ["view", "amend"],
     "view": ["full", "summary"],
-    "amend": ["add", "delete", "complete"]
+    "amend": ["add", "delete", "complete", "change"]
 }
 
 
@@ -71,7 +71,8 @@ def select_amend_function():
     while True:
         print("What amendment would you like?")
 
-        amend_response = input("Type 'Add', 'Delete' or 'Complete' here: \n")
+        amend_message = "Type 'Add', 'Delete', 'Complete' or 'Change' here:"
+        amend_response = input(f"{amend_message}\n")
         if validate_input(amend_response, "amend"):
             break
 
@@ -79,8 +80,10 @@ def select_amend_function():
         add_task()
     elif amend_response.lower() == 'delete':
         delete_task()
-    else:
+    elif amend_response.lower() == 'complete':
         complete_task()
+    else:
+        change_task()
 
     return amend_response
 
@@ -102,6 +105,7 @@ def validate_input(response, option):
 def view_full():
     """
     Formats and displays the full to-do list
+    Uses PrettyTable to format the table
     """
     data = SHEET.worksheet('to_do').get_all_values()
     full_list = PrettyTable()
@@ -114,34 +118,36 @@ def view_full():
 def view_summary():
     """
     Formats and displays a summary of the list
+    First table is all overdue tasks
+    Second table is the next three upcoming tasks
     """
     data = SHEET.worksheet('to_do').get_all_values()
     completion_list = SHEET.worksheet('to_do').col_values(4)
     today = datetime.today()
     incomplete_list = []
-    for i in range(len(data)):
-        if completion_list[i] == "Incomplete":
-            incomplete_list.append(data[i])
+    for count, item in enumerate(completion_list):
+        if item == 'Incomplete':
+            incomplete_list.append(data[count])
 
     overdue_list = []
-    for i in range(len(incomplete_list)):
-        if datetime.strptime(incomplete_list[i][2], "%d/%m/%Y") < today:
-            overdue_list.append(incomplete_list[i])
+    for count, item in enumerate(incomplete_list):
+        if datetime.strptime(item[2], '%d/%m/%Y') < today:
+            overdue_list.append(item)
 
     overdue_table = PrettyTable()
     overdue_table.field_names = data[0]
-    for i in range(len(overdue_list)):
-        overdue_table.add_row(overdue_list[i])
+    for count, item in enumerate(overdue_list):
+        overdue_table.add_row(item)
 
     print("\nHere are all of the overdue tasks:")
     print(overdue_table)
 
     upcoming_list = []
-    for i in range(len(incomplete_list)):
-        if datetime.strptime(incomplete_list[i][2], "%d/%m/%Y") >= today:
-            upcoming_list.append(incomplete_list[i])
+    for count, item in enumerate(incomplete_list):
+        if datetime.strptime(item[2], '%d/%m/%Y') >= today:
+            upcoming_list.append(item)
 
-    upcoming_list.sort(key=lambda x: datetime.strptime(x[2], "%d/%m/%Y"))
+    upcoming_list.sort(key=lambda x: datetime.strptime(x[2], '%d/%m/%Y'))
 
     upcoming_table = PrettyTable()
     upcoming_table.field_names = data[0]
@@ -200,9 +206,8 @@ def validate_add_task_date(input_date):
     Validates that the date input by the user is in the correct format
     Will provide an error message if incorrect and request the date again
     """
-    date_format = "%d/%m/%Y"
     try:
-        datetime.strptime(input_date, date_format)
+        datetime.strptime(input_date, '%d/%m/%Y')
         return True
     except ValueError:
         print("\nPlease ensure your date is in the format DD/MM/YYYY")
@@ -243,6 +248,35 @@ def complete_task():
     print(f"Task number {task_selection} has been set to Complete!")
 
 
+def change_task():
+    """
+    Requests the user to input a task number from the full table list to change
+    Asks for an updated name and deadline date
+    """
+    list_worksheet = SHEET.worksheet('to_do')
+    task_numbers = list_worksheet.col_values(1)
+    while True:
+        task_selection = input("Which task number would you like to change?\n")
+        if validate_task_number(task_selection):
+            break
+
+    task_position = int(task_numbers.index(task_selection))
+
+    while True:
+        update_name = input("Type the updated task name: \n")
+        if validate_add_task_name(update_name):
+            break
+
+    while True:
+        print("What is the revised deadline for this updated task?")
+        update_date = input("Use the format DD/MM/YYYY?: \n")
+        if validate_add_task_date(update_date):
+            break
+    list_worksheet.update_cell(task_position + 1, 2, update_name)
+    list_worksheet.update_cell(task_position + 1, 3, update_date)
+    print(f"Task number {task_selection} has been updated!")
+
+
 def validate_task_number(input_number):
     """
     Validates that the user has input an existing task number
@@ -263,7 +297,7 @@ def main():
     """
     while True:
         select_function()
-        print("\n────────────────────────────────────────────────────────────")
+        print("\n"+"─"*60)
 
 
 ascii_banner = pyfiglet.figlet_format("To Do List")
