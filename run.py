@@ -40,8 +40,6 @@ def select_function():
     else:
         select_amend_function()
 
-    return function_response
-
 
 def select_view_function():
     """
@@ -59,8 +57,6 @@ def select_view_function():
         view_full()
     else:
         view_summary()
-
-    return view_response
 
 
 def select_amend_function():
@@ -84,8 +80,6 @@ def select_amend_function():
         complete_task()
     else:
         change_task()
-
-    return amend_response
 
 
 def validate_input(response, option):
