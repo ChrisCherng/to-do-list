@@ -191,7 +191,7 @@ def validate_add_task_name(name):
     if len(name) <= 20:
         return True
     else:
-        print("The task name must be 20 character max")
+        print("The task name must be 20 character max.")
         return False
 
 
@@ -204,7 +204,7 @@ def validate_add_task_date(input_date):
         datetime.strptime(input_date, '%d/%m/%Y')
         return True
     except ValueError:
-        print("\nPlease ensure your date is in the format DD/MM/YYYY")
+        print("\nPlease ensure your date is in the format DD/MM/YYYY.")
         return False
 
 
@@ -297,5 +297,5 @@ def main():
 ascii_banner = pyfiglet.figlet_format("To Do List")
 print(ascii_banner)
 print("Welcome to your To Do List!")
-print("Please click 'Run Program' above to restart at any time")
+print("Please click 'Run Program' above to restart at any time.")
 main()

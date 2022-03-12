@@ -25,6 +25,10 @@ The application verifies if the user has input the deadline date in the correct 
 
 The user inputs the unique number of the task that they would like to delete (to find this, they can use the view full list functionality). This will permenantly remove the task from the list, and therefore it will no longer appear on any of the view functionalities.
 
+### Change the Name/Date of an Existing Task
+
+The user inputs the task number they'd like to change. The application then asks for the updated name of the task and the updated deadline date. THis will overwrite this task in the list.
+
 ### Mark a Task as Complete
 
 The user inputs the unique number of the task that they would like to mark as completed (to find this, they can use the view full list functionality). This will set the task status to "Complete".
@@ -54,18 +58,21 @@ The manipulation required to extract the relevant overdue and upcoming informati
 
 - All possible functions have been run to ensure they perform as expected.
 - Unusual potential user inputs, such as incorrect dates or incorrect task numbers, were tested to determine whether the validation functions were performing correctly. No issues were identified.
+- Friends and family members have tested the full functionality of the application, with no issues identified.
 
 ### Bugs
 
 #### Fixed Bugs
 
 - Tasks with longer names would not be able to be viewed on the console output. A validation function has been added to ensure the task names are no longer than 20 characters to ensure the correct output views.
-- 
+- There were no error messages if you input a task that does not exist in the "delete task" function. This was unclear to users as to what happened. A validation function has been included to ensure that only existing task numbers can be used.
 
 ### Validator Testing
 
 PEP8:
 - No errors were returned from [PEP8online.com](pep8online.com)
+
+![PEP8 screenshot showing no errors](/assets/images/pep8.png)
 
 
 ## Deployment
