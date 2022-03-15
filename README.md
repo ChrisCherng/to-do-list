@@ -6,6 +6,8 @@ It provides the user with a simple interface to keep track of their tasks.
 
 [Here is the live version of this application.](https://p3-to-do-list.herokuapp.com/)
 
+![Screenshot of the site on screens to show responsiveness](/assets/images/responsive.png)
+
 
 ## Features
 

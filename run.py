@@ -153,14 +153,33 @@ def view_summary():
     print(upcoming_table)
 
 
+class Task:
+    """
+    Class to hold the information needed for each task
+    Follows the same format as the underlying Google Sheet
+    """
+    def __init__(self, number, name, date, status):
+        self.number = number
+        self.name = name
+        self.date = date
+        self.status = status
+
+    def to_list(self):
+        """
+        Method returns the task in list format
+        The list format is needed for the add_task function
+        """
+        return [self.number, self.name, self.date, self.status]
+
+
 def add_task():
     """
     Requests the user to input a new task
     Adds the task to the google sheet list at the end
     """
     while True:
-        new_input = input("Type the name of the task here: \n")
-        if validate_add_task_name(new_input):
+        new_task_name = input("Type the name of the task here: \n")
+        if validate_add_task_name(new_task_name):
             break
 
     while True:
@@ -173,11 +192,12 @@ def add_task():
     task_numbers = list_worksheet.col_values(1)
     task_numbers.remove('Number')
     task_numbers_int = list(map(int, task_numbers))
-
     new_index = max(task_numbers_int) + 1
-    new_task = [new_index, new_input, new_date, 'Incomplete']
+
+    task = Task(new_index, new_task_name, new_date, 'Incomplete')
+
     list_worksheet = SHEET.worksheet('to_do')
-    list_worksheet.append_row(new_task)
+    list_worksheet.append_row(task.to_list())
 
     print(f"This task has been added as item number {new_index}.")
 
