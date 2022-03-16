@@ -128,10 +128,15 @@ def view_summary():
         if datetime.strptime(item[2], '%d/%m/%Y') < today:
             overdue_list.append(item)
 
+    count_overdue = len(overdue_list)
     overdue_table = PrettyTable()
     overdue_table.field_names = data[0]
-    for count, item in enumerate(overdue_list):
-        overdue_table.add_row(item)
+
+    if count_overdue == 0:
+        overdue_table.add_row(["", "You have no overdue tasks", "", ""])
+    else:
+        for count, item in enumerate(overdue_list):
+            overdue_table.add_row(item)
 
     print("\nHere are all of the overdue tasks:")
     print(overdue_table)
@@ -142,12 +147,20 @@ def view_summary():
             upcoming_list.append(item)
 
     upcoming_list.sort(key=lambda x: datetime.strptime(x[2], '%d/%m/%Y'))
+    count_upcoming = len(upcoming_list)
 
     upcoming_table = PrettyTable()
     upcoming_table.field_names = data[0]
-    upcoming_table.add_row(upcoming_list[0])
-    upcoming_table.add_row(upcoming_list[1])
-    upcoming_table.add_row(upcoming_list[2])
+
+    if count_upcoming == 0:
+        upcoming_table.add_row(["", "You have no upcoming tasks", "", ""])
+
+    if count_upcoming > 0:
+        upcoming_table.add_row(upcoming_list[0])
+        if count_upcoming > 1:
+            upcoming_table.add_row(upcoming_list[1])
+            if count_upcoming > 2:
+                upcoming_table.add_row(upcoming_list[2])
 
     print("\nHere are the next three upcoming tasks:")
     print(upcoming_table)
@@ -224,7 +237,7 @@ def validate_add_task_date(input_date):
         datetime.strptime(input_date, '%d/%m/%Y')
         return True
     except ValueError:
-        print("\nPlease ensure your date is in the format DD/MM/YYYY.")
+        print("\nEnsure the date is valid and in the format DD/MM/YYYY.")
         return False
 
 
