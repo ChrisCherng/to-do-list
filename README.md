@@ -23,23 +23,31 @@ The user inputs the name of the task, followed by the deadline of the task. The 
 
 The application verifies if the user has input the deadline date in the correct format - if not, an error message will display and request a correct format date.
 
+![Screenshot of the console when adding a task](/assets/images/addtask.png)
+
 ### Delete an Existing Task
 
 The user inputs the unique number of the task that they would like to delete (to find this, they can use the view full list functionality). This will permenantly remove the task from the list, and therefore it will no longer appear on any of the view functionalities.
+
+![Screenshot of the console when deleting a task](/assets/images/deletetask.png)
 
 ### Change the Name/Date of an Existing Task
 
 The user inputs the task number they'd like to change. The application then asks for the updated name of the task and the updated deadline date. THis will overwrite this task in the list.
 
+![Screenshot of the console when changing a task](/assets/images/changetask.png)
+
 ### Mark a Task as Complete
 
 The user inputs the unique number of the task that they would like to mark as completed (to find this, they can use the view full list functionality). This will set the task status to "Complete".
+
+![Screenshot of the console when completing a task](/assets/images/completetas.png)
 
 ### View the Full Listing
 
 This will display the full list of all tasks on the list - both complete and incomplete. This includes the number of each task, which is used for the delete and complete functions.
 
-![Screenshot of the full to-do list output](/assets/images/fulllist.png)
+![Screenshot of the full to-do list output](/assets/images/fullview.png)
 
 ### View a Summary Listing
 
@@ -47,7 +55,10 @@ This will display two summary tables of incomplete tasks:
 - all overdue tasks; and
 - the next three tasks due by date.
 
-If there are fewer than three upcoming incomplete tasks in the list, the second table will only show as many as exist.
+If there are no overdue tasks, the first table will display a message stating that there are no overdue tasks.
+If there are fewer than three upcoming incomplete tasks in the list, the second table will only show as many as exist. If there are no upcoming tasks, a message will display that there are no upcoming tasks.
+
+![Screenshot of the summary to-do list output](/assets/images/summaryview.png)
 
 
 ## Data Model
@@ -57,6 +68,8 @@ The data model for this application uses Google Sheets. The application is linke
 To perform any manipulation of the spreadsheet, including adding data, deleting data and amending data, the [gspread API](https://docs.gspread.org/en/latest/#) has been utilised. 
 
 The manipulation required to extract the relevant overdue and upcoming information in the Summary View is performed within the code with the help of the [datetime API](https://docs.python.org/3/library/datetime.html).
+
+![Screenshot of the underlying Google Sheets document](/assets/images/googlesheet.png)
 
 ## Testing
 
