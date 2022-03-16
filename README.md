@@ -41,7 +41,7 @@ The user inputs the task number they'd like to change. The application then asks
 
 The user inputs the unique number of the task that they would like to mark as completed (to find this, they can use the view full list functionality). This will set the task status to "Complete".
 
-![Screenshot of the console when completing a task](/assets/images/completetas.png)
+![Screenshot of the console when completing a task](/assets/images/completetask.png)
 
 ### View the Full Listing
 
