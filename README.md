@@ -13,7 +13,7 @@ It provides the user with a simple interface to keep track of their tasks.
 
 The application starts by asking the user which function to use. The following flowchart shows the options that the user can select, as well as a summary of the functionality. This flowchart was created at the planning stage to assist with the coding.
 
-![Flowchart of options for the to-do application](/assets/images/planningflow.PNG)
+![Flowchart of options for the to-do application](/assets/images/planningflow.png)
 
 When selecting a function, the application will validate that the responses are suitable. If not, an error message will display, and the question will be asked again. As part of this, when selecting a function, the user may use any combination of upper or lower cases - this will ensure the user does not have to use the exact case when typing their response for ease of use.
 
@@ -33,7 +33,7 @@ The user inputs the unique number of the task that they would like to delete (to
 
 ### Change the Name/Date of an Existing Task
 
-The user inputs the task number they'd like to change. The application then asks for the updated name of the task and the updated deadline date. THis will overwrite this task in the list.
+The user inputs the task number they would like to change. The application then asks for the updated name of the task and the updated deadline date. This will overwrite this task in the list.
 
 ![Screenshot of the console when changing a task](/assets/images/changetask.png)
 
@@ -112,8 +112,8 @@ Negative testing was undertaken to determine whether the application could handl
 - Tested using different combinations of upper and lower case for the selector inputs "view", "amend", "full", "summary", "add", "delete", "complete", and "change" at their respective points in the application flow. All tested combinations of upper and lower cases (e.g. "View", "VIEW", "view") provided the correct outcome with the application flow continuing as expected.
 - Tested inputting selectors that are different to those specified (e.g. inputting "hello" at the first input prompt). Testing these inputs at all stages of the application flow resulted in the application clearly displaying the error, and the prompt requesting a correct input again. This is the expected outcome.
 - Tested inputting a task number that does not exist during the "delete", "complete" and "change" functionality. This resulted in the application stating that the task number did not exist, then repeating the request to input a task number. Therefore, a user cannot perform task list amends for a task that does not exist.
-- Testing inputting a date in the wrong format (e.g. 31-07-22) or does not exist (e.g. 31/02/2023) in the "add" or "change" functionality. In these tests, the application requested that the user input a valid date in the correct format DD/MM/YYYY, and repeats the input request. This ensures that the dates input are all consistently in the same format, which allows for the sorting being performed in the summary view functionality.
-- Testing a task name with a very long name. The Code Institute mock terminal has a limit of 80 characters per line, and therefore any outputs displayed in the mock terminal must be below 80 characters. Some long task names were tested as part of the "add" and "change" functionalities. When the number of characters was over 20, an error message was displayed stating that the name should be below 20 characters, and the input prompt repeated. Therefore the number of characters on a line in the mock terminal will not exceed 80 characters, and any such information will be correctly displayed.
+- Tested inputting a date in the wrong format (e.g. 31-07-22) or that does not exist (e.g. 31/02/2023) in the "add" or "change" functionality. In these tests, the application requested that the user input a valid date in the correct format DD/MM/YYYY, and repeats the input request. This ensures that the dates input are all consistently in the same format, which allows for the sorting being performed in the summary view functionality.
+- Tested a task name with a very long name. The Code Institute mock terminal has a limit of 80 characters per line, and therefore any outputs displayed in the mock terminal must be below 80 characters. Some long task names were tested as part of the "add" and "change" functionalities. When the number of characters was over 20, an error message was displayed stating that the name should be below 20 characters, and the input prompt repeated. Therefore the number of characters on a line in the mock terminal will not exceed 80 characters, and any such information will be correctly displayed.
 
 ### Bugs
 
