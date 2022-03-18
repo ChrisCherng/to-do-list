@@ -11,11 +11,11 @@ It provides the user with a simple interface to keep track of their tasks.
 
 ## Features
 
-The application starts by asking the user which function to use. The following flowchart shows the options that the user can select, as well as a summary of the functionality. This flowchart was created at the planning stage to assist with the coding.
+The application starts by asking the user which function of the application they would like to use. The following flowchart shows the options that the user can select, as well as a summary of the functionality. This flowchart was created at the planning stage to assist with the build.
 
 ![Flowchart of options for the to-do application](/assets/images/planningflow.png)
 
-When selecting a function, the application will validate that the responses are suitable. If not, an error message will display, and the question will be asked again. As part of this, when selecting a function, the user may use any combination of upper or lower cases - this will ensure the user does not have to use the exact case when typing their response for ease of use.
+When selecting a function, the application will validate that the responses are suitable. If not, an error message will display, and the question will be asked again. As part of this, when selecting a function, the user may use any combination of upper or lower cases for their inputs - this will ensure the user does not have to use the exact case when typing their response, providing ease of use.
 
 ### Add a New Task
 
@@ -68,6 +68,8 @@ The data model for this application uses Google Sheets. The application is linke
 To perform any manipulation of the spreadsheet, including adding data, deleting data and amending data, the [gspread API](https://docs.gspread.org/en/latest/#) has been utilised. 
 
 The manipulation required to extract the relevant overdue and upcoming information in the Summary View is performed within the code with the help of the [datetime API](https://docs.python.org/3/library/datetime.html).
+
+The user does not have access to the underlying Google Sheet. This ensures that the data cannot be changed except through the use of the application, maintaining data integrity.
 
 ![Screenshot of the underlying Google Sheets document](/assets/images/googlesheet.png)
 
